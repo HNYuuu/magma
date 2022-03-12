@@ -15,8 +15,9 @@ fi
 
 cd "$TARGET/repo"
 ./autogen.sh
-./configure --disable-shared --enable-ossfuzzers
-make -j$(nproc) clean
-make -j$(nproc) ossfuzz/sndfile_fuzzer
+emconfigure ./configure --disable-shared --enable-ossfuzzers
+emmake make -j$(nproc) clean
+emmake make -j$(nproc) ossfuzz/sndfile_fuzzer
 
-cp -v ossfuzz/sndfile_fuzzer $OUT/
+cp -v ossfuzz/sndfile_fuzzer.wasm $OUT/
+cp -v src/.libs/libsndfile.a $OUT/
