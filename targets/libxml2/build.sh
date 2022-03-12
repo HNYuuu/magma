@@ -14,19 +14,19 @@ if [ ! -d "$TARGET/repo" ]; then
 fi
 
 cd "$TARGET/repo"
-./autogen.sh \
+emconfigure ./autogen.sh \
 	--with-http=no \
 	--with-python=no \
 	--with-lzma=yes \
 	--with-threads=no \
 	--disable-shared
-make -j$(nproc) clean
-make -j$(nproc) all
+emmake make -j$(nproc) clean
+emmake make -j$(nproc) all
 
-cp xmllint "$OUT/"
+cp .libs/libxml2.a "$OUT/"
 
 for fuzzer in libxml2_xml_read_memory_fuzzer libxml2_xml_reader_for_file_fuzzer; do
-  $CXX $CXXFLAGS -std=c++11 -Iinclude/ -I"$TARGET/src/" \
-      "$TARGET/src/$fuzzer.cc" -o "$OUT/$fuzzer" \
-      .libs/libxml2.a $LDFLAGS $LIBS -lz -llzma
+  emcc -g -std=c++11 -Iinclude/ -I"$TARGET/src/" \
+      "$TARGET/src/$fuzzer.cc" -o "$OUT/$fuzzer.html" \
+      .libs/libxml2.a $LDFLAGS $LIBS -lz
 done

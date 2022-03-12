@@ -16,14 +16,14 @@ fi
 # build the libpng library
 cd "$TARGET/repo"
 autoreconf -f -i
-./configure --with-libpng-prefix=MAGMA_ --disable-shared
-make -j$(nproc) clean
-make -j$(nproc) libpng16.la
+emconfigure ./configure --with-libpng-prefix=MAGMA_ --disable-shared CFLAGS="-s USE_ZLIB=1 -g"
+emmake make -j$(nproc) clean
+emmake make -j$(nproc) libpng16.la
 
 cp .libs/libpng16.a "$OUT/"
 
-# build libpng_read_fuzzer.
-$CXX $CXXFLAGS -std=c++11 -I. \
+# use emcc to build fuzzer
+emcc -s USE_ZLIB=1 -g -std=c++11 -I. \
      contrib/oss-fuzz/libpng_read_fuzzer.cc \
-     -o $OUT/libpng_read_fuzzer \
-     $LDFLAGS .libs/libpng16.a $LIBS -lz
+     -o $OUT/libpng_read_fuzzer.html \
+     .libs/libpng16.a -lz
