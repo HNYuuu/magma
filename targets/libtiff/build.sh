@@ -30,3 +30,6 @@ emcc -g -std=c++11 -I$WORK/include \
     contrib/oss-fuzz/tiff_read_rgba_fuzzer.cc -o $OUT/tiff_read_rgba_fuzzer.html \
     $WORK/lib/libtiffxx.a $WORK/lib/libtiff.a -lz \
     $LDFLAGS $LIBS
+
+cp -v $WORK/lib/libtiffxx.a "$OUT/"
+cp -v $WORK/lib/libtiff.a "$OUT/"
