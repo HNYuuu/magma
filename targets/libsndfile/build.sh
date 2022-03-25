@@ -19,5 +19,8 @@ emconfigure ./configure --disable-shared --enable-ossfuzzers
 emmake make -j$(nproc) clean
 emmake make -j$(nproc) ossfuzz/sndfile_fuzzer
 
-cp -v ossfuzz/sndfile_fuzzer.wasm $OUT/
 cp -v src/.libs/libsndfile.a $OUT/
+emcc -o $OUT/sndfile_fuzzer.html ./ossfuzz/sndfile_fuzzer-sndfile_fuzzer.o \
+		./ossfuzz/.libs/libstandaloneengine.a ./src/.libs/libcommon.a ./src/.libs/libsndfile.a \
+		$TARGET/../../common/main.cpp -D__WASM__
+

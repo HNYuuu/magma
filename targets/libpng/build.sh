@@ -26,4 +26,5 @@ cp .libs/libpng16.a "$OUT/"
 emcc -s USE_ZLIB=1 -g -std=c++11 -I. \
      contrib/oss-fuzz/libpng_read_fuzzer.cc \
      -o $OUT/libpng_read_fuzzer.html \
-     .libs/libpng16.a -lz
+     .libs/libpng16.a -lz \
+	 $TARGET/../../common/main.cpp -D__WASM__
